@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>С Новым 2027 годом!</title>
+  <link rel="stylesheet" href="stles/style.css" />
+</head>
+<body>
+<!-- Переключатели состояний -->
+<input type="checkbox" id="power-on" class="state-check" />
+<input type="checkbox" id="run-exe" class="state-check" />
+<input type="checkbox" id="next-win" class="state-check" />
+<input type="checkbox" id="gift-toggle" class="state-check" />
+
+<!-- Общий снег по всей странице -->
+<div class="snow snow-back" aria-hidden="true"></div>
+<div class="snow snow-front" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="room">
+    <div class="monitor">
+      <div class="screen">
+
+        <!-- Заглушка выключенного экрана -->
+        <div class="screen-off" aria-hidden="true">
+          <span class="screen-off-hint">Нажми кнопку питания на корпусе</span>
+        </div>
+
+        <!-- 0. Рабочий стол ПК (после включения) -->
+        <div class="desktop-view">
+          <label for="run-exe" class="shortcut" title="Нажми, чтобы запустить">
+            <div class="exe-icon">
+              <span>EXE</span>
+            </div>
+            <div class="exe-name">NEW_YEAR.EXE</div>
+          </label>
+
+          <div class="taskbar">
+            <span class="left start-btn">Пуск</span>
+            <span class="right clock">23:59</span>
+            <div class="clear"></div>
+          </div>
+        </div>
+
+        <!-- 1. Первое окно: Загрузка чудес -->
+        <div class="win win-load">
+          <div class="bar">
+            <span class="left">NEW_YEAR.EXE — Загрузка</span>
+            <label for="run-exe" class="close-btn right" title="Закрыть">X</label>
+            <span class="step-tag right">[1/2]</span>
+            <div class="clear"></div>
+          </div>
+
+          <p class="prompt">&gt; Запуск NEW_YEAR.EXE...</p>
+          <p class="prompt">&gt; Распаковка новогоднего настроения...</p>
+
+          <div class="progress-wrap">
+            <span>Загрузка чудес:</span>
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="win-footer">
+            <span class="done-note">Готово на 100%!</span>
+            <label for="next-win" class="win-btn right">Далее &rarr;</label>
+            <div class="clear"></div>
+          </div>
+        </div>
+
+        <!-- 2. Второе окно: Санта и поздравление -->
+        <div class="win win-wish">
+          <div class="santa-flyer" aria-hidden="true">
+            <div class="santa">
+              <div class="hat"></div>
+              <div class="head"></div>
+              <div class="beard"></div>
+              <div class="coat"></div>
+            </div>
+            <div class="sleigh">
+              <div class="gift"></div>
+              <div class="body"></div>
+              <div class="runner"></div>
+            </div>
+          </div>
+
+          <div class="bar">
+            <span class="left">NEW_YEAR.EXE — 2027</span>
+            <label for="run-exe" class="close-btn right" title="Закрыть">X</label>
+            <span class="step-tag right">[2/2]</span>
+            <div class="clear"></div>
+          </div>
+
+          <!-- Бегущая строка с пожеланиями -->
+          <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+              <span>Пусть код компилируется с первого раза ✦</span>
+              <span>Пусть баги обходят стороной ✦</span>
+              <span>Пусть аптайм будет 99.99% ✦</span>
+              <span>Пусть мечты сбываются в 2027 ✦</span>
+              <span>Пусть будет много счастья и мало ошибок ✦</span>
+            </div>
+          </div>
+
+          <div class="greeting">
+            <h1>С Новым годом!</h1>
+            <p>Пусть в 2027 году всё работает без багов, мечты сбываются, а на столе уже ждёт подарок — нажми на него!</p>
+          </div>
+
+          <div class="win-footer">
+            <label for="next-win" class="win-btn left">&larr; Назад</label>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mon-bottom">
+        <span class="left brand">FROST-PC 2027</span>
+        <span class="right led" aria-hidden="true"></span>
+        <div class="clear"></div>
+      </div>
+    </div>
+
+    <div class="stand"></div>
+    <div class="stand-foot"></div>
+
+    <div class="desk-items">
+      <div class="mug" aria-hidden="true"></div>
+      <div class="keyboard" aria-hidden="true"></div>
+      <div class="mouse" aria-hidden="true"></div>
+
+      <!-- Подарок на столе (появляется после загрузки) -->
+      <div class="desk-gift-wrap">
+        <label for="gift-toggle" class="desk-gift" title="Нажми, чтобы открыть подарок">
+          <div class="gift-prize" id="giftPrize" aria-hidden="true"></div>
+
+          <div class="gift-top">
+            <div class="bow"></div>
+            <div class="lid"></div>
+          </div>
+          <div class="box"></div>
+        </label>
+      </div>
+
+      <div class="desk"></div>
+
+      <div class="under">
+        <div class="leg left"></div>
+        <div class="leg right"></div>
+        <div class="cable" aria-hidden="true"></div>
+
+        <!-- Корпус Cooler Master Shark X: акула стоит вертикально на хвосте -->
+        <div class="tower">
+          <div class="tower-body">
+            <!-- Голова акулы (верхняя часть, смотрит вверх/вперед) -->
+            <div class="shark-head">
+              <div class="shark-eye" aria-hidden="true"></div>
+              <div class="shark-gills" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <!-- Спинной плавник (верхний, большой) -->
+            <div class="shark-dorsal" aria-hidden="true"></div>
+            <!-- Боковые плавники -->
+            <div class="shark-pectoral shark-pectoral-left" aria-hidden="true"></div>
+            <div class="shark-pectoral shark-pectoral-right" aria-hidden="true"></div>
+
+            <!-- Пасть в нижней части (под ней находятся компоненты) -->
+            <div class="shark-mouth" aria-hidden="true">
+              <div class="shark-teeth"></div>
+              <div class="shark-mouth-light"></div>
+            </div>
+
+            <!-- Хвост, на котором стоит корпус -->
+            <div class="shark-tail" aria-hidden="true">
+              <div class="shark-tail-fin"></div>
+            </div>
+
+            <!-- Вентиляционное окно / RGB-зона -->
+            <div class="shark-window" aria-hidden="true"></div>
+
+            <!-- Панель управления -->
+            <div class="shark-controls">
+              <label for="power-on" class="pwr" title="Включить ПК"></label>
+              <span class="usb" aria-hidden="true"></span>
+              <span class="usb" aria-hidden="true"></span>
+              <span class="hdd" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <!-- Шестиугольное RGB-основание -->
+          <div class="shark-base" aria-hidden="true"></div>
+
+          <!-- Красная стрелка на кнопку питания -->
+          <div class="power-arrow" aria-hidden="true">
+            <svg viewBox="0 0 60 40" width="60" height="40">
+              <path d="M2 20 L38 20" stroke="#ff2d2d" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <path d="M38 10 L52 20 L38 30 Z" fill="#ff2d2d"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+
+      <div class="floor"></div>
+    </div>
+  </div>
+</div>
+
+<script src="scripts/script.js"></script>
+</body>
+</html>

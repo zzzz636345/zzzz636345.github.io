@@ -1,0 +1,1731 @@
+/* ============================================================
+   БАЗОВЫЕ СБРОСЫ И КОРНЕВЫЕ НАСТРОЙКИ
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: table;
+    background: radial-gradient(circle, #1b2838, #0d131a);
+    font: 13px/1.45 "Courier New", Consolas, monospace;
+    overflow-x: hidden;
+}
+
+.state-check {
+    display: none;
+}
+
+.left { float: left; }
+.right { float: right; }
+.clear { clear: both; }
+
+/* ============================================================
+   СНЕГ
+   ============================================================ */
+
+.snow {
+    position: fixed;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-image:
+            radial-gradient(2.5px 2.5px at 12% 20%, #fff 70%, transparent 75%),
+            radial-gradient(3px 3px at 35% 65%, #fff 70%, transparent 75%),
+            radial-gradient(2px 2px at 60% 25%, #fff 70%, transparent 75%),
+            radial-gradient(3.5px 3.5px at 82% 72%, #fff 70%, transparent 75%);
+    background-size: 380px 380px;
+}
+
+.snow-back { position: fixed; z-index: 1; }
+.snow-front { position: fixed; z-index: 10; background-size: 480px 480px; }
+
+#power-on:checked ~ .snow-back {
+    animation-name: fade, fall;
+    animation-duration: 1s, 10s;
+    animation-timing-function: ease, linear;
+    animation-delay: 2.8s, 2.8s;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards, none;
+}
+
+#power-on:checked ~ .snow-front {
+    animation-name: fade, fall;
+    animation-duration: 1s, 6.5s;
+    animation-timing-function: ease, linear;
+    animation-delay: 2.8s, 2.8s;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards, none;
+}
+
+/* ============================================================
+   ЦЕНТРИРОВАНИЕ
+   ============================================================ */
+
+.wrap {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 20px 14px;
+    position: relative;
+    z-index: 2;
+}
+
+.room {
+    display: inline-block;
+    width: 100%;
+    max-width: 580px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* ============================================================
+   СОВРЕМЕННЫЙ МОНИТОР
+   ============================================================ */
+
+.monitor {
+    max-width: 460px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #2a2d33 0%, #1a1c21 100%);
+    padding: 10px 10px 8px;
+    border-radius: 14px;
+    border: 1px solid #3a3d44;
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 20px 40px rgba(0, 0, 0, 0.65),
+            0 0 0 1px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.screen {
+    background: #0a0f0d;
+    color: #52f296;
+    border-radius: 8px;
+    height: 240px;
+    border: 2px solid #0a0a0a;
+    box-shadow:
+            inset 0 0 30px rgba(82, 242, 150, 0.18),
+            inset 0 0 60px rgba(0, 0, 0, 0.6),
+            0 0 0 1px #4a4d54;
+    position: relative;
+    overflow: hidden;
+}
+
+.screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 7;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.04) 100%);
+    border-radius: 8px;
+}
+
+.screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 6;
+    background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0,0,0,0.18) 4px);
+}
+
+.screen-off {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    background: radial-gradient(circle at 50% 40%, #0a0f0d 0%, #000 80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: opacity 0.6s ease;
+}
+
+.screen-off-hint {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(82, 242, 150, 0.25);
+    text-shadow: 0 0 6px rgba(82, 242, 150, 0.15);
+    padding: 0 12px;
+    text-align: center;
+}
+
+#power-on:checked ~ .wrap .screen-off {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.desktop-view {
+    position: absolute;
+    inset: 0;
+    padding: 16px;
+    background: linear-gradient(160deg, #1b4332 0%, #0b251c 100%);
+    z-index: 3;
+    display: none;
+}
+
+#power-on:checked ~ .wrap .desktop-view {
+    display: block;
+}
+
+.shortcut {
+    display: inline-block;
+    width: 96px;
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px dashed transparent;
+    border-radius: 6px;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.shortcut:hover {
+    background: rgba(82, 242, 150, 0.14);
+    border-color: rgba(82, 242, 150, 0.55);
+}
+
+.exe-icon {
+    width: 38px;
+    height: 44px;
+    margin: 0 auto 6px;
+    background: #d8f3dc;
+    border: 2px solid #52f296;
+    border-top: 8px solid #ffd166;
+    border-radius: 3px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+}
+
+.exe-icon span {
+    display: block;
+    margin-top: 9px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #081c15;
+}
+
+.exe-name {
+    font-size: 11px;
+    color: #fff;
+    text-shadow: 0 1px 3px #000;
+}
+
+.taskbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 24px;
+    padding: 3px 8px;
+    background: #143628;
+    border-top: 1px solid #2d6a4f;
+    font-size: 11px;
+    color: #d8f3dc;
+}
+
+.start-btn {
+    padding: 0 7px;
+    background: #2d6a4f;
+    border: 1px solid #52f296;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+.clock { line-height: 17px; }
+
+/* ============================================================
+   ОКНА
+   ============================================================ */
+
+.win {
+    display: none;
+    position: relative;
+    height: 100%;
+    padding: 14px;
+}
+
+#power-on:checked ~ #run-exe:checked ~ .wrap .desktop-view { display: none; }
+#power-on:checked ~ #run-exe:checked ~ .wrap .win-load { display: block; }
+#power-on:checked ~ #run-exe:checked ~ #next-win:checked ~ .wrap .win-load { display: none; }
+#power-on:checked ~ #run-exe:checked ~ #next-win:checked ~ .wrap .win-wish { display: block; }
+
+.bar {
+    position: relative;
+    z-index: 5;
+    font-size: 12px;
+    color: #95f9c3;
+    border-bottom: 1px solid rgba(82, 242, 150, 0.35);
+    padding-bottom: 5px;
+    margin-bottom: 12px;
+    line-height: 18px;
+}
+
+.step-tag { margin-right: 8px; opacity: 0.85; }
+
+.close-btn {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    background: #d62828;
+    border: 1px solid #ff758f;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.close-btn:hover { background: #f94144; }
+
+.prompt { margin-bottom: 8px; opacity: 0.9; }
+
+.progress-wrap { font-size: 12px; margin-top: 14px; }
+
+.progress-bar {
+    margin-top: 6px;
+    height: 14px;
+    border: 1px solid #52f296;
+    padding: 2px;
+    background: rgba(0,0,0,0.35);
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: #52f296;
+    box-shadow: 0 0 10px #52f296;
+}
+
+#power-on:checked ~ #run-exe:checked ~ .wrap .progress-fill {
+    animation: load 2.8s ease-out forwards;
+}
+
+.win-footer {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    z-index: 5;
+}
+
+.done-note {
+    float: left;
+    font-size: 12px;
+    color: #ffd166;
+    line-height: 24px;
+    opacity: 0;
+}
+
+#power-on:checked ~ #run-exe:checked ~ .wrap .done-note {
+    animation: fade 0.5s ease forwards 2.8s;
+}
+
+.win-btn {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #081c15;
+    background: #52f296;
+    border: 1px solid #95f9c3;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.win-btn:hover {
+    background: #ffd166;
+    border-color: #ffe699;
+}
+
+.win-load .win-btn {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#power-on:checked ~ #run-exe:checked ~ .wrap .win-load .win-btn {
+    pointer-events: auto;
+    animation: fade 0.5s ease forwards 2.8s;
+}
+
+/* ============================================================
+   2-Е ОКНО
+   ============================================================ */
+
+.greeting { position: relative; z-index: 3; padding-top: 4px; }
+
+.greeting h1 {
+    font-size: 22px;
+    color: #ffd166;
+    text-shadow: 0 0 10px rgba(255,209,102,0.65);
+    margin-bottom: 8px;
+}
+
+.greeting p { color: #d8f3dc; line-height: 1.5; }
+
+.santa-flyer {
+    position: absolute;
+    top: 36px;
+    left: -120px;
+    width: 105px;
+    height: 58px;
+    z-index: 4;
+}
+
+#next-win:checked ~ .wrap .santa-flyer {
+    animation: fly 2.4s cubic-bezier(0.22,0.61,0.36,1) forwards, hover 2.4s ease-in-out infinite 2.4s;
+}
+
+.santa { position: absolute; left: 26px; top: 2px; width: 32px; height: 38px; }
+.hat { position: absolute; left: 6px; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 12px solid #e63946; }
+.hat::after { content: ""; position: absolute; top: -3px; left: -2px; width: 5px; height: 5px; background: #fff; border-radius: 50%; }
+.head { position: absolute; top: 11px; left: 8px; width: 14px; height: 11px; background: #ffd6ba; border-radius: 50%; }
+.beard { position: absolute; top: 17px; left: 6px; width: 18px; height: 13px; background: #fff; border-radius: 4px 4px 10px 10px; z-index: 2; }
+.coat { position: absolute; top: 22px; left: 5px; width: 20px; height: 14px; background: #e63946; border-radius: 6px 6px 0 0; }
+.sleigh { position: absolute; bottom: 2px; left: 8px; width: 80px; height: 24px; }
+.gift { position: absolute; top: -7px; left: 6px; width: 15px; height: 13px; background: #ffd166; border-left: 5px solid #e63946; }
+.body { position: absolute; top: 2px; left: 4px; width: 66px; height: 15px; background: #b5172c; border-radius: 4px 4px 14px 14px; border-top: 3px solid #ffd166; }
+.runner { position: absolute; bottom: 0; width: 80px; height: 4px; background: #ffd166; border-radius: 0 6px 6px 0; }
+
+/* ============================================================
+   НИЗ МОНИТОРА
+   ============================================================ */
+
+.mon-bottom {
+    margin-top: 8px;
+    padding: 0 6px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #6b6f78;
+    line-height: 1;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+
+.led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3a3d44;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.6);
+    animation-play-state: paused;
+}
+
+#power-on:checked ~ .wrap .led {
+    background: #2ec4b6;
+    box-shadow: 0 0 6px #2ec4b6, 0 0 12px rgba(46,196,182,0.5), inset 0 0 2px rgba(255,255,255,0.6);
+    animation: blink 1.5s infinite alternate;
+}
+
+.stand {
+    width: 100px;
+    height: 22px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #3a3d44 0%, #1a1c21 100%);
+    border-radius: 0 0 8px 8px / 0 0 14px 14px;
+    border: 1px solid #2a2d33;
+    border-top: 0;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.stand::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 60px;
+    height: 100%;
+    margin-left: -30px;
+    background: linear-gradient(180deg, #2a2d33 0%, #1a1c21 100%);
+    border-radius: 0 0 6px 6px;
+}
+
+.stand-foot {
+    width: 190px;
+    height: 10px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #3a3d44 0%, #1a1c21 100%);
+    border-radius: 6px 6px 0 0;
+    border: 1px solid #2a2d33;
+    border-bottom: 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 4px rgba(0,0,0,0.4);
+    position: relative;
+}
+
+.stand-foot::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: rgba(82,242,150,0.3);
+    border-radius: 1px;
+}
+
+/* ============================================================
+   ПРЕДМЕТЫ НА СТОЛЕ
+   ============================================================ */
+
+.desk-items {
+    text-align: center;
+    margin-top: -26px;
+    font-size: 0;
+    position: relative;
+    z-index: 6;
+}
+
+.desk-items > div { display: inline-block; vertical-align: bottom; }
+
+.mug {
+    width: 22px;
+    height: 24px;
+    margin-right: 36px;
+    background: #d62828;
+    border-top: 4px solid #fff;
+    border-radius: 2px 2px 6px 6px;
+    position: relative;
+}
+
+.mug::after {
+    content: "";
+    position: absolute;
+    right: -6px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: 2px solid #d62828;
+    border-left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.keyboard {
+    width: 190px;
+    height: 12px;
+    border: 2px solid #b5ae9f;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background: repeating-linear-gradient(to right, #8c8578 0 9px, #d8d2c5 9px 12px);
+}
+
+.mouse {
+    width: 24px;
+    height: 10px;
+    margin-left: 24px;
+    background: #d8d2c5;
+    border: 2px solid #b5ae9f;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+}
+
+/* ============================================================
+   ПОДАРОК
+   ============================================================ */
+
+.desk-gift-wrap {
+    display: none;
+    width: 34px;
+    height: 36px;
+    margin-left: 28px;
+    position: relative;
+    z-index: 20;
+}
+
+#power-on:checked ~ #next-win:checked ~ .wrap .desk-gift-wrap {
+    display: inline-block;
+    opacity: 0;
+    animation: fade 0.6s ease forwards 0.4s;
+}
+
+.desk-gift {
+    display: block;
+    width: 34px;
+    height: 36px;
+    position: relative;
+    cursor: pointer;
+}
+
+.desk-gift:hover .gift-top { transform: translateY(-2px); }
+
+.gift-top {
+    position: relative;
+    z-index: 3;
+    transform-origin: left bottom;
+    transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.bow { width: 18px; height: 7px; margin: 0 auto; border: 3px solid #ffd166; border-radius: 6px 6px 0 0; }
+.lid { width: 34px; height: 7px; background: #e63946; border-radius: 2px; box-shadow: 0 2px 3px rgba(0,0,0,0.25); position: relative; }
+.box { width: 30px; height: 22px; margin: 0 auto; background: #c1121f; border-radius: 0 0 3px 3px; position: relative; z-index: 2; }
+.box::before, .lid::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 6px; margin-left: -3px; background: #ffd166; }
+
+/* ============================================================
+   РАНДОМАЙЗЕР
+   ============================================================ */
+
+.gift-prize {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    width: 190px;
+    height: 110px;
+    margin-left: -95px;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(14px) scale(0.35);
+    transition: transform 0.6s cubic-bezier(0.22,1.25,0.36,1), opacity 0.35s ease;
+}
+
+#gift-toggle:checked ~ .wrap .gift-prize {
+    opacity: 1;
+    transform: translateY(-96px) scale(1);
+    animation: prize-float 2.6s ease-in-out infinite 0.6s;
+}
+
+@keyframes prize-float {
+    0%, 100% { transform: translateY(-96px) scale(1); }
+    50%      { transform: translateY(-104px) scale(1.03); }
+}
+
+#gift-toggle:checked ~ .wrap .gift-top {
+    transform: translate(-12px, -14px) rotate(-38deg);
+}
+
+.prize-card {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 170px;
+    height: 106px;
+    margin-left: -85px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2b2d42 0%, #11131a 60%, #1f2233 100%);
+    border: 1px solid #4a4e69;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.65);
+    overflow: hidden;
+}
+
+.prize-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff0055, #ffd166, #00f5d4, #7b2cbf, #ff0055);
+    background-size: 200% 100%;
+    animation: rgb-flow 2s linear infinite;
+    box-shadow: 0 0 10px rgba(0,245,212,0.75);
+}
+
+.prize-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #e2e8f0;
+    text-shadow: 0 1px 2px #000;
+}
+
+.prize-sub {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    text-align: center;
+    font-size: 8.5px;
+    color: #95f9c3;
+    letter-spacing: 0.3px;
+}
+
+.prize-icon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: #ffd166;
+    box-shadow: 0 0 8px #ffd166;
+    z-index: 2;
+}
+
+/* ============================================================
+   МОДЕЛИ ПОДАРКОВ
+   ============================================================ */
+
+.prize-model {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    width: 140px;
+    height: 56px;
+    margin-left: -70px;
+    z-index: 1;
+}
+
+/* GPU */
+.model-gpu {
+    position: relative;
+    width: 140px;
+    height: 56px;
+    background: linear-gradient(180deg, #1a1d28 0%, #0a0b10 100%);
+    border-radius: 4px;
+    border: 1px solid #2a2d3a;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.gpu-top-rgb {
+    position: absolute;
+    top: 1px;
+    left: 8px;
+    right: 8px;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #00f5d4, #7b2cbf, #ff0055, #00f5d4);
+    background-size: 300% 100%;
+    animation: rgb-flow 3s linear infinite;
+    box-shadow: 0 0 8px rgba(0,245,212,0.8);
+}
+
+.gpu-shroud {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    height: 34px;
+    background: linear-gradient(180deg, #1f2233 0%, #0c0e16 100%);
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 4px;
+    border: 1px solid #2a2d3a;
+}
+
+.gpu-fan {
+    position: relative;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #12141c 0%, #2b2d42 60%, #0c0e16 100%);
+    border: 1px solid #3a3d4a;
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
+}
+
+.gpu-blades {
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #6b7280 0deg 30deg, #1a1d28 30deg 60deg, #6b7280 60deg 90deg, #1a1d28 90deg 120deg, #6b7280 120deg 150deg, #1a1d28 150deg 180deg, #6b7280 180deg 210deg, #1a1d28 210deg 240deg, #6b7280 240deg 270deg, #1a1d28 270deg 300deg, #6b7280 300deg 330deg, #1a1d28 330deg 360deg);
+    animation: spin 1.8s linear infinite;
+    opacity: 0.9;
+}
+
+.gpu-hub {
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #2b2d42 0%, #0c0e16 100%);
+    border: 1px solid #4a4e69;
+    box-shadow: inset 0 0 2px rgba(255,255,255,0.1);
+    z-index: 2;
+}
+
+.gpu-fin-stack {
+    position: absolute;
+    bottom: 9px;
+    left: 8px;
+    right: 8px;
+    height: 5px;
+    background: repeating-linear-gradient(to right, #2a2d3a 0 2px, #0c0e16 2px 4px);
+    border-radius: 1px;
+}
+
+.gpu-backplate {
+    position: absolute;
+    bottom: 3px;
+    left: 6px;
+    right: 6px;
+    height: 5px;
+    background: linear-gradient(180deg, #1f2233 0%, #0c0e16 100%);
+    border-radius: 0 0 3px 3px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 4px;
+}
+
+.gpu-logo { font-size: 5px; font-weight: bold; letter-spacing: 0.6px; color: #00f5d4; text-shadow: 0 0 4px #00f5d4; }
+
+.gpu-bracket {
+    position: absolute;
+    top: 6px;
+    left: 2px;
+    width: 4px;
+    height: 34px;
+    background: linear-gradient(90deg, #6b7280 0%, #3a3d4a 100%);
+    border-radius: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 3px 0;
+}
+
+.gpu-port { display: block; width: 3px; height: 3px; background: #0c0e16; border-radius: 1px; margin: 0 auto; }
+
+/* RAM */
+.model-ram { position: relative; width: 140px; height: 56px; }
+
+.ram-stick {
+    position: absolute;
+    left: 8px;
+    width: 124px;
+    height: 24px;
+    background: linear-gradient(180deg, #1a1d28 0%, #0a0b10 100%);
+    border: 1px solid #2a2d3a;
+    border-radius: 2px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+}
+
+.ram-stick-1 { top: 2px;  transform: rotate(-3deg); }
+.ram-stick-2 { top: 22px; transform: rotate(2deg); }
+
+.ram-rgb-bar {
+    position: absolute;
+    top: 0;
+    left: 2px;
+    right: 2px;
+    height: 4px;
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(90deg, #ff0055, #ffd166, #00f5d4, #7b2cbf, #ff0055);
+    background-size: 300% 100%;
+    animation: rgb-flow 2s linear infinite;
+    box-shadow: 0 0 8px rgba(0,245,212,0.85);
+}
+
+.ram-heatsink {
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    right: 2px;
+    height: 12px;
+    background: linear-gradient(180deg, #2b2d42 0%, #15171f 100%);
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+}
+
+.ram-ridge {
+    display: block;
+    width: 3px;
+    height: 9px;
+    background: linear-gradient(180deg, #4a4e69 0%, #1a1d28 100%);
+    border-radius: 1px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.ram-pcb { position: absolute; bottom: 5px; left: 2px; right: 2px; height: 4px; background: #0a1a10; border-radius: 0 0 1px 1px; }
+
+.ram-gold-pins {
+    position: absolute;
+    bottom: -3px;
+    left: 3px;
+    right: 3px;
+    height: 3px;
+    background: repeating-linear-gradient(to right, #ffd166 0 2px, #8b6914 2px 3px, transparent 3px 4px);
+    border-radius: 0 0 1px 1px;
+}
+
+/* CPU */
+.model-cpu { position: relative; width: 140px; height: 56px; }
+
+.cpu-substrate {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 60px;
+    height: 38px;
+    margin-left: -30px;
+    background: linear-gradient(135deg, #2b6a4f 0%, #143628 100%);
+    border: 1px solid #0d2418;
+    border-radius: 3px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cpu-ihs {
+    width: 48px;
+    height: 28px;
+    background: linear-gradient(135deg, #e8eef5 0%, #b0b8c5 40%, #8892a6 70%, #5b6377 100%);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.6), inset 0 -1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.cpu-ihs::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+    pointer-events: none;
+}
+
+.cpu-brand { font-size: 5px; font-weight: bold; letter-spacing: 0.8px; color: #1a1d28; line-height: 1; z-index: 1; }
+.cpu-model { font-size: 6px; font-weight: bold; letter-spacing: 0.5px; color: #0a0b10; line-height: 1; margin-top: 1px; z-index: 1; }
+.cpu-spec { font-size: 4px; font-weight: bold; letter-spacing: 0.3px; color: #3d4759; line-height: 1; margin-top: 1px; z-index: 1; }
+
+.cpu-notch {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    margin-left: -30px;
+    border-top: 5px solid #0d2418;
+    border-right: 5px solid transparent;
+}
+
+.cpu-contact-pins {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 62px;
+    height: 5px;
+    margin-left: -31px;
+    background: repeating-linear-gradient(to right, #ffd166 0 2px, #8b6914 2px 3px, transparent 3px 4px);
+    border-radius: 1px;
+}
+
+/* Motherboard */
+.model-mb { position: relative; width: 140px; height: 56px; }
+
+.mb-pcb {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a1d28 0%, #0c0e16 100%);
+    border: 1px solid #2a2d3a;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+}
+
+.mb-io-panel {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 30px;
+    height: 8px;
+    background: repeating-linear-gradient(to right, #95f9c3 0 2px, transparent 2px 4px);
+    border: 1px solid #4a4e69;
+    border-radius: 1px;
+}
+
+.mb-vrm-heatsink {
+    position: absolute;
+    top: 3px;
+    left: 36px;
+    width: 50px;
+    height: 6px;
+    background: linear-gradient(180deg, #2b2d42 0%, #15171f 100%);
+    border: 1px solid #4a4e69;
+    border-radius: 1px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.mb-ddr5-slot {
+    position: absolute;
+    right: 5px;
+    width: 4px;
+    height: 28px;
+    background: #0a0b10;
+    border: 1px solid #4a4e69;
+    border-radius: 1px;
+    box-shadow: inset 0 0 2px rgba(255,209,102,0.3);
+}
+
+.mb-ddr5-slot:nth-of-type(1) { top: 4px; right: 5px; }
+.mb-ddr5-slot:nth-of-type(2) { top: 4px; right: 11px; }
+.mb-ddr5-slot:nth-of-type(3) { top: 4px; right: 17px; }
+.mb-ddr5-slot:nth-of-type(4) { top: 4px; right: 23px; }
+
+.mb-pcie-x16 {
+    position: absolute;
+    left: 6px;
+    top: 22px;
+    width: 56px;
+    height: 5px;
+    background: linear-gradient(180deg, #2b2d42 0%, #0a0b10 100%);
+    border: 1px solid #7b7f9c;
+    border-radius: 1px;
+    box-shadow: inset 0 0 3px rgba(123,127,156,0.3);
+}
+
+.mb-pcie-x4 {
+    position: absolute;
+    left: 6px;
+    top: 31px;
+    width: 34px;
+    height: 4px;
+    background: linear-gradient(180deg, #2b2d42 0%, #0a0b10 100%);
+    border: 1px solid #7b7f9c;
+    border-radius: 1px;
+}
+
+.mb-chipset-heatsink {
+    position: absolute;
+    left: 8px;
+    top: 10px;
+    width: 18px;
+    height: 10px;
+    background: linear-gradient(135deg, #2b2d42 0%, #15171f 100%);
+    border: 1px solid #4a4e69;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 6px rgba(123,44,191,0.5);
+}
+
+.mb-rog-eye {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff0055 0%, #7b2cbf 70%);
+    box-shadow: 0 0 6px #ff0055;
+    animation: blink 2s infinite alternate;
+}
+
+.mb-cap {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #e8eef5 0%, #8892a6 100%);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.mb-cap:nth-of-type(1) { left: 30px; top: 11px; }
+.mb-cap:nth-of-type(2) { left: 36px; top: 11px; }
+.mb-cap:nth-of-type(3) { left: 42px; top: 11px; }
+.mb-cap:nth-of-type(4) { left: 30px; top: 17px; }
+
+.mb-24pin {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    width: 14px;
+    height: 6px;
+    background: repeating-linear-gradient(to right, #ffd166 0 2px, #8b6914 2px 3px, transparent 3px 4px);
+    border: 1px solid #4a4e69;
+    border-radius: 1px;
+}
+
+.mb-battery {
+    position: absolute;
+    left: 8px;
+    bottom: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #e8eef5 0%, #8892a6 100%);
+    border: 1px solid #4a4e69;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* ============================================================
+   БЕГУЩАЯ СТРОКА
+   ============================================================ */
+
+.marquee {
+    position: relative;
+    z-index: 5;
+    overflow: hidden;
+    height: 20px;
+    margin: 6px 0 10px;
+    border-top: 1px dashed rgba(82,242,150,0.35);
+    border-bottom: 1px dashed rgba(82,242,150,0.35);
+    background: rgba(0,0,0,0.25);
+    font-size: 11px;
+    color: #ffd166;
+    white-space: nowrap;
+}
+
+.marquee-track {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 22s linear infinite;
+    will-change: transform;
+}
+
+.marquee-track span { display: inline-block; padding: 2px 10px; letter-spacing: 0.4px; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+}
+
+/* ============================================================
+   СТОЛ И ПОДСТОЛЬЕ
+   ============================================================ */
+
+.desk {
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(180deg, #a86b32 0%, #8d5524 40%, #6b3e17 100%);
+    border-top: 3px solid #c17f3f;
+    border-radius: 6px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15);
+    position: relative;
+    z-index: 3;
+}
+
+.under {
+    width: 88%;
+    height: 175px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.leg {
+    width: 20px;
+    height: 175px;
+    background: linear-gradient(90deg, #4a2810 0%, #633814 40%, #7a4a1f 100%);
+    border-radius: 2px;
+    box-shadow: inset -2px 0 3px rgba(0,0,0,0.4);
+}
+
+.floor {
+    width: 100%;
+    height: 14px;
+    background: linear-gradient(180deg, #141c26 0%, #0a0f16 100%);
+    border-top: 2px solid #263445;
+    border-radius: 4px 4px 0 0;
+}
+
+.cable {
+    position: absolute;
+    top: 0;
+    right: 142px;
+    width: 52px;
+    height: 110px;
+    border: solid #1a1c1f;
+    border-width: 0 0 3px 3px;
+    border-radius: 0 0 0 26px;
+    box-shadow: 0 3px 0 rgba(255,255,255,0.03);
+}
+
+/* ============================================================
+   КОРПУС COOLER MASTER SHARK X
+   Акула стоит вертикально на хвосте (как в реальном корпусе).
+   Голова сверху, пасть в нижней части, спинной плавник — вверх.
+   ============================================================ */
+
+.tower {
+    position: absolute;
+    bottom: 0;
+    right: 6px;
+    width: 170px;
+    height: 230px;
+    background: transparent;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Шестиугольное RGB-основание --- */
+.shark-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 150px;
+    height: 18px;
+    margin-left: -75px;
+    background: linear-gradient(180deg, #1a1d28 0%, #0a0b10 100%);
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+    border: 1px solid #3a3d4a;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.08), 0 8px 20px rgba(0,0,0,0.8);
+    z-index: 2;
+    pointer-events: auto;
+    transition: box-shadow 0.4s ease;
+}
+
+#power-on:checked ~ .wrap .shark-base {
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.08), 0 8px 20px rgba(0,0,0,0.8), 0 0 20px rgba(0,245,212,0.35);
+}
+
+/* ARGB-свечение основания */
+.shark-base::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+    background: transparent;
+    box-shadow: inset 0 0 10px rgba(0,245,212,0);
+    transition: box-shadow 0.5s ease;
+}
+
+#power-on:checked ~ .wrap .shark-base::after {
+    box-shadow: inset 0 0 12px rgba(0,245,212,0.5), inset 0 0 24px rgba(123,44,191,0.3);
+}
+
+/* --- Тело акулы (вертикальное, стоит на хвосте) --- */
+.tower-body {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    width: 120px;
+    height: 200px;
+    margin-left: -60px;
+    background: linear-gradient(160deg, #2b2d42 0%, #1a1d28 30%, #12141c 65%, #0a0b10 100%);
+    /* Вертикальная капсула: голова сверху, сужение к хвосту внизу */
+    border-radius: 50% 50% 20% 20% / 35% 35% 15% 15%;
+    border: 2px solid #3a3d4a;
+    box-shadow:
+            inset 0 0 30px rgba(0,0,0,0.9),
+            inset 0 10px 18px rgba(255,255,255,0.06),
+            0 0 40px rgba(0,245,212,0.1);
+    z-index: 3;
+    overflow: visible;
+    pointer-events: auto;
+}
+
+/* Светящийся контур */
+.tower-body::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    border: 1px solid rgba(0,245,212,0.2);
+    pointer-events: none;
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+#power-on:checked ~ .wrap .tower-body::before {
+    border-color: rgba(0,245,212,0.6);
+    box-shadow: 0 0 18px rgba(0,245,212,0.45);
+}
+
+/* --- Голова (верхняя часть) --- */
+.shark-head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    pointer-events: none;
+}
+
+/* Глаз */
+.shark-eye {
+    position: absolute;
+    top: 22px;
+    left: 18px;
+    width: 14px;
+    height: 12px;
+    background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #1a1d28 50%, #e8eef5 78%, #c9d1e0 100%);
+    border-radius: 55% 45% 50% 50% / 60% 55% 45% 40%;
+    border: 1px solid #0d1a30;
+    box-shadow: inset 0 -1px 2px rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.5);
+    transform: rotate(-10deg);
+}
+
+.shark-eye::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 5px;
+    height: 4px;
+    background: radial-gradient(circle, #ffd166 30%, #0a0a0a 70%);
+    border-radius: 50%;
+    box-shadow: 0 0 5px #ffd166;
+    opacity: 0.3;
+    animation: blink 3s infinite alternate;
+    animation-play-state: paused;
+}
+
+#power-on:checked ~ .wrap .shark-eye::after {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+/* Жабры */
+.shark-gills {
+    position: absolute;
+    top: 42px;
+    left: 12px;
+    width: 28px;
+    height: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shark-gills span {
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, #0d1a30 0%, #6d8bb0 100%);
+    border-radius: 2px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+    transform: skewX(-15deg) rotate(-4deg);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+#power-on:checked ~ .wrap .shark-gills span {
+    background: linear-gradient(90deg, #0d1a30 0%, #00f5d4 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 0 4px rgba(0,245,212,0.6);
+}
+
+/* --- Пасть (нижняя часть корпуса, под ней компоненты) --- */
+.shark-mouth {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    width: 66px;
+    height: 22px;
+    margin-left: -33px;
+    background: radial-gradient(ellipse at center, #050505 0%, #0a0b10 80%);
+    border-radius: 50% 50% 55% 55% / 45% 45% 55% 55%;
+    border: 1px solid #2a2d3a;
+    box-shadow: inset 0 4px 8px rgba(0,0,0,0.9);
+    overflow: hidden;
+    z-index: 4;
+}
+
+/* Зубы */
+.shark-teeth {
+    position: absolute;
+    top: 0;
+    left: 3px;
+    right: 3px;
+    height: 6px;
+    background: repeating-linear-gradient(to right, #e8eef5 0 3px, transparent 3px 6px);
+    opacity: 0.85;
+}
+
+.shark-teeth::after {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: repeating-linear-gradient(to right, #e8eef5 0 3px, transparent 3px 6px);
+    opacity: 0.75;
+}
+
+/* RGB-подсветка пасти */
+.shark-mouth-light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,245,212,0.35) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#power-on:checked ~ .wrap .shark-mouth-light {
+    opacity: 1;
+    animation: mouth-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes mouth-glow {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+}
+
+/* --- Спинной плавник (верхний, большой, как антенна) --- */
+.shark-dorsal {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    margin-left: -22px;
+    border-bottom: 44px solid #2b2d42;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.5));
+    transform: skewX(-4deg);
+    transition: border-bottom-color 0.4s ease, filter 0.4s ease;
+}
+
+#power-on:checked ~ .wrap .shark-dorsal {
+    border-bottom-color: #3a5a8a;
+    filter: drop-shadow(0 0 10px rgba(0,245,212,0.7));
+}
+
+/* --- Боковые плавники --- */
+.shark-pectoral {
+    position: absolute;
+    top: 100px;
+    width: 0;
+    height: 0;
+    border-top: 26px solid #2b2d42;
+    filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45));
+    transition: border-top-color 0.4s ease, filter 0.4s ease;
+}
+
+.shark-pectoral-left {
+    left: -18px;
+    border-right: 12px solid transparent;
+    transform: rotate(-20deg);
+}
+
+.shark-pectoral-right {
+    right: -18px;
+    border-left: 12px solid transparent;
+    transform: rotate(20deg);
+}
+
+#power-on:checked ~ .wrap .shark-pectoral {
+    border-top-color: #3a5a8a;
+    filter: drop-shadow(0 0 6px rgba(0,245,212,0.5));
+}
+
+/* --- Хвост (нижняя часть, на которой стоит корпус) --- */
+.shark-tail {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    margin-left: -30px;
+    border-bottom: 24px solid #2b4a73;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+    transition: border-bottom-color 0.4s ease, filter 0.4s ease;
+}
+
+#power-on:checked ~ .wrap .shark-tail {
+    border-bottom-color: #3a5a8a;
+    filter: drop-shadow(0 0 6px rgba(0,245,212,0.4));
+}
+
+/* --- Вентиляционное окно / RGB-зона --- */
+.shark-window {
+    position: absolute;
+    top: 80px;
+    right: 12px;
+    width: 36px;
+    height: 42px;
+    background: linear-gradient(160deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.75) 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.85);
+    overflow: hidden;
+    opacity: 0.7;
+    transition: opacity 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+#power-on:checked ~ .wrap .shark-window {
+    opacity: 1;
+    border-color: rgba(0,245,212,0.5);
+    box-shadow: inset 0 0 14px rgba(0,245,212,0.45), 0 0 12px rgba(0,245,212,0.3);
+}
+
+.shark-window::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #00f5d4 0deg 30deg, transparent 30deg 60deg, #00f5d4 60deg 90deg, transparent 90deg 120deg, #00f5d4 120deg 150deg, transparent 150deg 180deg, #00f5d4 180deg 210deg, transparent 210deg 240deg, #00f5d4 240deg 270deg, transparent 270deg 300deg, #00f5d4 300deg 330deg, transparent 330deg 360deg);
+    box-shadow: 0 0 6px rgba(0,245,212,0.6);
+    opacity: 0.15;
+    animation: spin 2s linear infinite;
+    animation-play-state: paused;
+}
+
+.shark-window::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #7b2cbf 0deg 30deg, transparent 30deg 60deg, #7b2cbf 60deg 90deg, transparent 90deg 120deg, #7b2cbf 120deg 150deg, transparent 150deg 180deg, #7b2cbf 180deg 210deg, transparent 210deg 240deg, #7b2cbf 240deg 270deg, transparent 270deg 300deg, #7b2cbf 300deg 330deg, transparent 330deg 360deg);
+    box-shadow: 0 0 6px rgba(123,44,191,0.6);
+    opacity: 0.15;
+    animation: spin 2.6s linear infinite reverse;
+    animation-play-state: paused;
+}
+
+#power-on:checked ~ .wrap .shark-window::before,
+#power-on:checked ~ .wrap .shark-window::after {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+/* --- Панель управления --- */
+.shark-controls {
+    position: absolute;
+    bottom: 52px;
+    left: 50%;
+    width: 54px;
+    height: 12px;
+    margin-left: -27px;
+    background: linear-gradient(180deg, #2b4a73 0%, #1a2f52 100%);
+    border-radius: 4px;
+    border: 1px solid #0d1a30;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    z-index: 4;
+    pointer-events: auto;
+}
+
+.pwr {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #3a3d44 0%, #1a1c21 100%);
+    border: 1px solid #0d3b36;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.pwr::after {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    width: 2px;
+    height: 3px;
+    background: #0d3b36;
+    border-radius: 1px;
+}
+
+#power-on:checked ~ .wrap .pwr {
+    background: radial-gradient(circle, #2ec4b6 0%, #1a7a70 100%);
+    box-shadow: 0 0 6px rgba(46,196,182,0.8), inset 0 1px 1px rgba(255,255,255,0.3);
+}
+
+.hdd {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #f4a261;
+    box-shadow: 0 0 4px #f4a261;
+    opacity: 0.25;
+    animation: blink 0.7s infinite alternate;
+    animation-play-state: paused;
+}
+
+#power-on:checked ~ .wrap .hdd {
+    opacity: 1;
+    animation-play-state: running;
+}
+
+.usb {
+    width: 5px;
+    height: 3px;
+    background: #0d1a30;
+    border: 1px solid #4a6fa5;
+    border-radius: 1px;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.8);
+}
+
+/* --- Свечение по контуру при включении --- */
+#power-on:checked ~ .wrap .tower-body {
+    box-shadow:
+            inset 0 0 30px rgba(0,0,0,0.9),
+            inset 0 10px 18px rgba(255,255,255,0.06),
+            0 0 50px rgba(0,245,212,0.2);
+}
+
+/* ============================================================
+   КРАСНАЯ СТРЕЛКА
+   ============================================================ */
+
+.power-arrow {
+    position: absolute;
+    left: -46px;
+    bottom: 60px;
+    width: 60px;
+    height: 40px;
+    pointer-events: none;
+    z-index: 10;
+    filter: drop-shadow(0 0 6px rgba(255,45,45,0.7));
+    animation: arrow-pulse 1.2s ease-in-out infinite;
+    opacity: 1;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@keyframes arrow-pulse {
+    0%, 100% { transform: translateX(0) scale(1); filter: drop-shadow(0 0 4px rgba(255,45,45,0.6)); }
+    50%      { transform: translateX(6px) scale(1.05); filter: drop-shadow(0 0 10px rgba(255,45,45,0.95)); }
+}
+
+#power-on:checked ~ .wrap .power-arrow {
+    opacity: 0;
+    transform: translateX(12px) scale(0.9);
+    animation: none;
+}
+
+/* ============================================================
+   АНИМАЦИИ
+   ============================================================ */
+
+@keyframes load { 0% { width: 0; } 70% { width: 82%; } 100% { width: 100%; } }
+
+@keyframes fly {
+    0%   { left: -120px; top: 72px; transform: rotate(-8deg); }
+    50%  { top: 30px; transform: rotate(4deg); }
+    100% { left: calc(100% - 112px); top: 36px; transform: rotate(0); }
+}
+
+@keyframes hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes fade  { to { opacity: 1; } }
+@keyframes fall  { to { background-position: 40px 380px; } }
+@keyframes blink { from { opacity: 0.35; } to { opacity: 1; } }
+@keyframes rgb-flow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   АДАПТИВКА
+   ============================================================ */
+
+@media (max-width: 720px) {
+    .room { max-width: 520px; }
+    .monitor { max-width: 440px; }
+    .screen { height: 230px; }
+    .greeting h1 { font-size: 20px; }
+    .greeting p { font-size: 12px; }
+    .marquee { font-size: 10px; height: 18px; }
+}
+
+@media (max-width: 560px) {
+    .wrap { padding: 14px 10px; }
+    .room { max-width: 100%; }
+
+    .monitor { max-width: 100%; padding: 8px 8px 6px; border-radius: 12px; }
+    .screen { height: 210px; border-width: 2px; }
+    .win { padding: 10px; }
+    .bar { font-size: 11px; }
+    .santa-flyer { transform: scale(0.8); transform-origin: top left; }
+    .greeting h1 { font-size: 18px; }
+    .greeting p { font-size: 11px; }
+    .marquee { font-size: 10px; height: 18px; margin: 4px 0 8px; }
+
+    .desk-items { margin-top: -18px; }
+    .keyboard { width: 130px; }
+    .mug { margin-right: 18px; }
+    .mouse { margin-left: 12px; }
+
+    .under { height: 150px; }
+    .leg { height: 150px; width: 14px; }
+    .cable { right: 120px; height: 100px; }
+
+    /* Shark X компактнее */
+    .tower { width: 140px; height: 190px; right: 2px; }
+    .shark-base { width: 124px; margin-left: -62px; height: 15px; }
+    .tower-body { width: 100px; height: 166px; margin-left: -50px; }
+    .shark-head { height: 74px; }
+    .shark-eye { top: 18px; left: 14px; width: 12px; height: 10px; }
+    .shark-eye::after { width: 4px; height: 3px; top: 2px; left: 3px; }
+    .shark-gills { top: 34px; left: 10px; width: 24px; height: 26px; gap: 3px; }
+    .shark-gills span { height: 2px; }
+    .shark-mouth { bottom: 14px; width: 54px; height: 18px; margin-left: -27px; }
+    .shark-dorsal { top: -26px; margin-left: -18px; border-bottom: 36px solid #2b2d42; border-left: 18px solid transparent; border-right: 18px solid transparent; }
+    .shark-pectoral { top: 82px; border-top: 22px solid #2b2d42; }
+    .shark-pectoral-left { left: -14px; border-right: 10px solid transparent; }
+    .shark-pectoral-right { right: -14px; border-left: 10px solid transparent; }
+    .shark-tail { bottom: -3px; margin-left: -24px; border-bottom: 20px solid #2b4a73; border-left: 24px solid transparent; border-right: 24px solid transparent; }
+    .shark-window { top: 66px; right: 8px; width: 30px; height: 34px; }
+    .shark-window::before, .shark-window::after { width: 9px; height: 9px; }
+    .shark-controls { width: 46px; height: 10px; margin-left: -23px; bottom: 44px; }
+    .pwr { width: 6px; height: 6px; }
+    .pwr::after { left: 1.5px; height: 2.5px; }
+    .hdd { width: 3px; height: 3px; }
+    .usb { width: 4px; height: 2px; }
+
+    .power-arrow { left: -38px; bottom: 50px; width: 44px; height: 30px; }
+    .power-arrow svg { width: 44px; height: 30px; }
+
+    .stand { width: 80px; height: 18px; }
+    .stand-foot { width: 140px; height: 8px; }
+    .brand { font-size: 9px; letter-spacing: 2px; }
+    .led { width: 6px; height: 6px; }
+
+    .desk-gift-wrap { margin-left: 12px; }
+    .gift-prize { width: 160px; height: 94px; margin-left: -80px; }
+    .prize-card { width: 146px; height: 90px; margin-left: -73px; }
+    .prize-model { width: 120px; height: 48px; margin-left: -60px; top: 11px; }
+    .model-gpu, .model-ram, .model-cpu, .model-mb { width: 120px; height: 48px; }
+    .prize-name { font-size: 10px; bottom: 20px; }
+    .prize-sub  { font-size: 7.5px; bottom: 7px; }
+}
+
+@media (max-width: 380px) {
+    .screen { height: 200px; }
+    .greeting h1 { font-size: 16px; }
+    .greeting p { font-size: 10px; line-height: 1.35; }
+    .marquee { font-size: 9px; }
+    .win-btn { padding: 2px 7px; font-size: 11px; }
+    .mouse { display: none; }
+    .keyboard { width: 110px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track,
+    .prize-card::before,
+    .gift-prize,
+    .gpu-blades,
+    .mb-rog-eye,
+    .shark-window::before,
+    .shark-window::after,
+    .shark-eye::after,
+    .power-arrow,
+    .shark-mouth-light {
+        animation: none !important;
+        transition: none !important;
+    }
+    .marquee-track { transform: none; padding-left: 0; white-space: normal; }
+}
