@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>С Новым 2027 годом!</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="stles/style.css" />
 </head>
 <body>
 <!-- Переключатели состояний -->
@@ -150,48 +150,81 @@
         <div class="leg right"></div>
         <div class="cable" aria-hidden="true"></div>
 
-        <!-- Корпус Cooler Master Shark X: акула стоит вертикально на хвосте -->
+        <!-- Корпус в стиле Cooler Master Shark X: вся акула — одно SVG, умещается под столом -->
         <div class="tower">
-          <div class="tower-body">
-            <!-- Голова акулы (верхняя часть, смотрит вверх/вперед) -->
-            <div class="shark-head">
-              <div class="shark-eye" aria-hidden="true"></div>
-              <div class="shark-gills" aria-hidden="true">
-                <span></span><span></span><span></span><span></span>
-              </div>
-            </div>
+          <svg class="shark-svg" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="sk-body" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#43536f"/><stop offset=".4" stop-color="#202838"/><stop offset="1" stop-color="#0b0e15"/>
+          </linearGradient>
+          <linearGradient id="sk-fin" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#52678c"/><stop offset="1" stop-color="#171d2c"/>
+          </linearGradient>
+          <linearGradient id="sk-glass" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0c1424"/><stop offset="1" stop-color="#05070c"/>
+          </linearGradient>
+          <clipPath id="sk-win-clip"><rect x="54" y="62" width="66" height="88" rx="8"/></clipPath>
+        </defs>
 
-            <!-- Спинной плавник (верхний, большой) -->
-            <div class="shark-dorsal" aria-hidden="true"></div>
-            <!-- Боковые плавники -->
-            <div class="shark-pectoral shark-pectoral-left" aria-hidden="true"></div>
-            <div class="shark-pectoral shark-pectoral-right" aria-hidden="true"></div>
+        <!-- Плавники (за корпусом): хвост, спинной, грудной -->
+        <path class="sk-fin" d="M124 134 Q150 140 158 168 Q142 158 120 160 Z"/>
+        <path class="sk-fin" d="M120 28 Q144 26 154 6 Q157 50 130 80 Z"/>
+        <path class="sk-fin" d="M33 100 Q14 112 6 138 Q22 132 34 128 Z"/>
 
-            <!-- Пасть в нижней части (под ней находятся компоненты) -->
-            <div class="shark-mouth" aria-hidden="true">
-              <div class="shark-teeth"></div>
-              <div class="shark-mouth-light"></div>
-            </div>
+        <!-- Корпус (вид сбоку: морда сверху слева) -->
+        <path class="sk-body" d="M22 16 C50 4 104 4 122 26 C130 38 128 60 128 90 L128 140 C128 152 120 160 108 162 L50 162 C38 160 32 152 32 140 L32 56 C32 40 26 28 22 16 Z"/>
+        <path class="sk-shine" d="M26 17 C54 7 100 8 116 28 C90 22 58 24 34 40 C32 32 29 24 26 17 Z"/>
+        <path class="sk-trim" d="M27 20 C54 10 100 11 118 31 C124 42 123 60 123 90 L123 138"/>
 
-            <!-- Хвост, на котором стоит корпус -->
-            <div class="shark-tail" aria-hidden="true">
-              <div class="shark-tail-fin"></div>
-            </div>
+        <!-- Пасть и зубы на морде -->
+        <g class="sk-teeth"><polygon points="31,44 24,47 31,50"/><polygon points="31,52 24,55 31,58"/></g>
 
-            <!-- Вентиляционное окно / RGB-зона -->
-            <div class="shark-window" aria-hidden="true"></div>
+        <!-- Глаз и жабры -->
+        <path class="sk-brow" d="M36 20 L54 23"/>
+        <ellipse cx="46" cy="28" rx="5.6" ry="4.2" class="sk-eye"/>
+        <circle cx="46.6" cy="28" r="2.7" fill="#04070b"/>
+        <circle cx="46.6" cy="28" r="1.5" class="sk-eye-glow"/>
+        <path class="sk-gill" d="M64 34 L60 50"/><path class="sk-gill" d="M70 34 L66 50"/>
+        <path class="sk-gill" d="M76 34 L72 50"/><path class="sk-gill" d="M82 34 L78 50"/>
 
-            <!-- Панель управления -->
-            <div class="shark-controls">
-              <label for="power-on" class="pwr" title="Включить ПК"></label>
-              <span class="usb" aria-hidden="true"></span>
-              <span class="usb" aria-hidden="true"></span>
-              <span class="hdd" aria-hidden="true"></span>
-            </div>
-          </div>
+        <!-- Гнездо кнопки питания (сама кнопка — HTML-label поверх) -->
+        <circle class="sk-socket" cx="42" cy="84" r="8"/>
+        <circle class="sk-hdd" cx="42" cy="99" r="1.6"/>
 
-          <!-- Шестиугольное RGB-основание -->
-          <div class="shark-base" aria-hidden="true"></div>
+        <!-- Стеклянная боковая панель: внутренности ПК -->
+        <rect class="sk-glass" x="54" y="62" width="66" height="88" rx="8"/>
+        <g clip-path="url(#sk-win-clip)">
+          <rect class="sk-board" x="54" y="62" width="66" height="88"/>
+          <!-- радиатор СЖО -->
+          <rect class="sk-rad" x="62" y="68" width="50" height="8" rx="2"/>
+          <path class="sk-rad-slats" d="M66 72 L108 72"/>
+          <!-- помпа и трубки -->
+          <path class="sk-tube" d="M70 84 Q64 78 66 76"/>
+          <path class="sk-tube" d="M78 92 Q92 92 102 78"/>
+          <circle class="sk-pump" cx="70" cy="92" r="9"/>
+          <circle class="sk-pump-core" cx="70" cy="92" r="4"/>
+          <!-- память -->
+          <rect class="sk-ram sk-ram-1" x="97" y="86" width="2.4" height="20" rx="1.2"/>
+          <rect class="sk-ram sk-ram-2" x="101.5" y="86" width="2.4" height="20" rx="1.2"/>
+          <rect class="sk-ram sk-ram-3" x="106" y="86" width="2.4" height="20" rx="1.2"/>
+          <rect class="sk-ram sk-ram-1" x="110.5" y="86" width="2.4" height="20" rx="1.2"/>
+          <!-- видеокарта с тремя вентиляторами -->
+          <rect class="sk-gpu" x="58" y="110" width="58" height="19" rx="3"/>
+          <g class="fan fan-a"><circle cx="69" cy="119.5" r="6.5" class="fan-ring"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(0.0 69 119.5)"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(51.4 69 119.5)"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(102.9 69 119.5)"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(154.3 69 119.5)"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(205.7 69 119.5)"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(257.1 69 119.5)"/><path d="M69 118.24 Q72.35 115.73 69.84 113.63 Q67.32 115.31 69 118.24Z" transform="rotate(308.6 69 119.5)"/><circle cx="69" cy="119.5" r="1.60" class="fan-hub"/></g><g class="fan fan-b"><circle cx="87" cy="119.5" r="6.5" class="fan-ring"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(0.0 87 119.5)"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(51.4 87 119.5)"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(102.9 87 119.5)"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(154.3 87 119.5)"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(205.7 87 119.5)"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(257.1 87 119.5)"/><path d="M87 118.24 Q90.35 115.73 87.84 113.63 Q85.32 115.31 87 118.24Z" transform="rotate(308.6 87 119.5)"/><circle cx="87" cy="119.5" r="1.60" class="fan-hub"/></g><g class="fan fan-a"><circle cx="105" cy="119.5" r="6.5" class="fan-ring"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(0.0 105 119.5)"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(51.4 105 119.5)"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(102.9 105 119.5)"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(154.3 105 119.5)"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(205.7 105 119.5)"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(257.1 105 119.5)"/><path d="M105 118.24 Q108.35 115.73 105.84 113.63 Q103.32 115.31 105 118.24Z" transform="rotate(308.6 105 119.5)"/><circle cx="105" cy="119.5" r="1.60" class="fan-hub"/></g>
+          <!-- блок питания -->
+          <rect class="sk-psu" x="58" y="133" width="58" height="13" rx="2"/>
+          <g class="sk-vents"><path d="M62 138 L112 138"/><path d="M62 142 L112 142"/></g>
+          <path d="M54 62 L90 62 L54 112 Z" fill="#fff" opacity=".05"/>
+        </g>
+        <rect class="sk-glass-edge" x="54" y="62" width="66" height="88" rx="8"/>
+
+        <!-- Шестиугольное основание -->
+        <polygon class="sk-base" points="22,164 138,164 150,170 138,176 22,176 10,170"/>
+        <polyline class="sk-base-glow" points="22,175 138,175"/>
+      </svg>
+
+          <!-- Кнопка питания (клик по ней включает ПК) -->
+          <label for="power-on" class="pwr" title="Включить ПК"></label>
 
           <!-- Красная стрелка на кнопку питания -->
           <div class="power-arrow" aria-hidden="true">
